@@ -5,6 +5,13 @@ class CodeGent {
     this.isProcessing = false;
     this.isListening = false;
 
+    // Add dynamic backend URL
+    this.backendURL =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000/api"
+        : "https://freespace-ai-platform.onrender.com/api";
+
     // DOM elements
     this.chatMessages = null;
     this.userInput = null;
@@ -178,7 +185,8 @@ class CodeGent {
     try {
       this.showStatus("Connecting to CodeGent...", "connecting");
 
-      const response = await fetch("/api/codegent/start", {
+      // Update URL to use dynamic backend
+      const response = await fetch(`${this.backendURL}/codegent/start`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -254,7 +262,8 @@ class CodeGent {
     try {
       this.showStatus("CodeGent is analyzing...", "processing");
 
-      const response = await fetch("/api/codegent/respond", {
+      // Update URL to use dynamic backend
+      const response = await fetch(`${this.backendURL}/codegent/respond`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -262,7 +271,7 @@ class CodeGent {
         body: JSON.stringify({
           message: message,
           language: this.selectedLanguage,
-          conversation_history: this.conversationHistory.slice(-10), // Last 10 messages for context
+          conversation_history: this.conversationHistory.slice(-10),
         }),
       });
 
