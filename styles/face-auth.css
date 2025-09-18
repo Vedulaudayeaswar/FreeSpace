@@ -1,0 +1,133 @@
+.face-auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.face-auth-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.face-auth-header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+}
+
+.face-auth-container {
+    text-align: center;
+}
+
+.camera-feed {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 25px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+#video, #canvas {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.detection-status {
+    margin-bottom: 20px;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 50px;
+}
+
+.indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff6b6b;
+    margin-right: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+.status-indicator.ready .indicator-dot {
+    background: #1dd1a1;
+}
+
+.status-indicator.detecting .indicator-dot {
+    background: #48dbfb;
+}
+
+.status-indicator span {
+    color: white;
+    font-size: 14px;
+}
+
+.happiness-meter {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 25px;
+}
+
+.meter-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.meter-label span {
+    color: white;
+    font-size: 14px;
+}
+
+.meter-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff6b6b, #feca57, #1dd1a1);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.privacy-note {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.privacy-note p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.privacy-note i {
+    margin-right: 8px;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Talk With Maya - Your AI Friend</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/talk-with-me.css" />
+  </head>
+  <body>
+    <div class="background-animation">
+      <div class="particles"></div>
+      <div class="gradient-bg"></div>
+    </div>
+
+    <div class="home-nav">
+      <a href="who-are-you.html" class="home-btn" title="Go to Home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a
+        href="codegent.html"
+        class="codegent-btn"
+        title="CodeGent - Coding Assistant"
+      >
+        <i class="fas fa-code"></i>
+        <span>CodeGent</span>
+      </a>
+      <a href="zenmode.html" class="zen-btn" title="Zen Meditation Mode">
+        <i class="fas fa-seedling"></i>
+        <span>Zen Mode</span>
+      </a>
+    </div>
+
+    <div class="container">
+      <div class="chat-container glass-panel">
+        <div class="chat-header">
+          <div class="ai-avatar">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="chat-info">
+            <h2>Maya - Your AI Friend</h2>
+            <div id="connectionStatus" class="status">
+              Connecting to Maya...
+            </div>
+          </div>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+          <div class="message ai-message">
+            <div class="message-avatar">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div class="message-content">
+              <p>
+                Hi! I'm Maya, your AI friend. Give me a moment to get ready to
+                listen to you... 💙
+              </p>
+              <div class="message-time">Just now</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="voice-controls">
+          <button id="talkButton" class="voice-btn" disabled>
+            <i class="fas fa-microphone"></i>
+            <span>Hold to Talk</span>
+          </button>
+          <button
+            id="stopButton"
+            class="voice-btn secondary"
+            style="display: none"
+          >
+            <i class="fas fa-stop"></i>
+            <span>Stop</span>
+          </button>
+        </div>
+
+        <div class="quick-responses">
+          <button
+            class="quick-btn"
+            data-response="I'm feeling really overwhelmed with everything"
+          >
+            <i class="fas fa-cloud-rain"></i>
+            Feeling overwhelmed
+          </button>
+          <button
+            class="quick-btn"
+            data-response="I'm having such a terrible day"
+          >
+            <i class="fas fa-frown"></i>
+            Having a bad day
+          </button>
+          <button
+            class="quick-btn"
+            data-response="I feel so lonely and isolated"
+          >
+            <i class="fas fa-user-friends"></i>
+            Feeling lonely
+          </button>
+          <button
+            class="quick-btn"
+            data-response="I'm super stressed about my studies"
+          >
+            <i class="fas fa-book"></i>
+            Academic stress
+          </button>
+        </div>
+      </div>
+
+      <div class="support-sidebar">
+        <div class="maya-info glass-panel">
+          <div class="maya-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h3>Meet Maya</h3>
+          <p>
+            I'm your AI friend powered by advanced AI. I can listen to you speak
+            naturally and respond with empathy and understanding.
+          </p>
+          <div class="maya-features">
+            <div class="feature">
+              <i class="fas fa-microphone"></i>
+              <span>Voice Recognition</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-volume-up"></i>
+              <span>Voice Responses</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-heart"></i>
+              <span>Emotional Support</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="support-card glass-panel">
+          <h3><i class="fas fa-shield-heart"></i> You're Safe Here</h3>
+          <p>
+            Everything you share with Maya is private and confidential. Express
+            yourself freely.
+          </p>
+        </div>
+
+        <div class="emergency-card glass-panel">
+          <h3><i class="fas fa-phone"></i> Need Immediate Help?</h3>
+          <p>Crisis Hotline: <a href="tel:988">988</a></p>
+          <p>Text "HELLO" to <a href="sms:741741">741741</a></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/talk-with-me.js"></script>
+  </body>
+</html>

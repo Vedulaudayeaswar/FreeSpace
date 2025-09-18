@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select Role - FreeSpace</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/who-are-you.css" />
+  </head>
+  <body>
+    <div class="background-animation">
+      <div class="particles"></div>
+      <div class="gradient-bg"></div>
+    </div>
+
+    <div class="container">
+      <div class="card glass-panel">
+        <div class="welcome-header">
+          <h2>Welcome, <span id="userName">User</span>!</h2>
+          <p>Tell us about yourself to personalize your experience</p>
+        </div>
+
+        <div class="role-selection">
+          <div class="role-card" data-role="student">
+            <div class="role-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3>Student</h3>
+            <p>I'm navigating school or university life</p>
+          </div>
+
+          <div class="role-card" data-role="professional">
+            <div class="role-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h3>Working Professional</h3>
+            <p>I'm managing career and work-life balance</p>
+          </div>
+
+          <div class="role-card" data-role="parent">
+            <div class="role-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Parent</h3>
+            <p>I'm supporting my family's mental wellness</p>
+          </div>
+
+          <div class="role-card" onclick="window.location.href='codegent.html'">
+            <div class="role-icon">
+              <i class="fas fa-code"></i>
+            </div>
+            <h3>Coding Assistant</h3>
+            <p>Get help with Python, Java, C++, and Go programming</p>
+            <span class="role-tag">CodeGent</span>
+          </div>
+        </div>
+
+        <div class="role-footer">
+          <p>
+            Your selection helps us tailor resources and support to your
+            specific needs
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-nav">
+      <a href="who-are-you.html" class="nav-btn" title="Go to Home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a
+        href="zenmode.html"
+        class="nav-btn zen-btn"
+        title="Zen Meditation Mode"
+      >
+        <i class="fas fa-seedling"></i>
+        <span>Zen Mode</span>
+      </a>
+    </div>
+
+    <div class="home-nav">
+      <a href="index.html" class="home-btn" title="Go to Home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a
+        href="codegent.html"
+        class="codegent-btn"
+        title="CodeGent - Coding Assistant"
+      >
+        <i class="fas fa-code"></i>
+        <span>CodeGent</span>
+      </a>
+      <a href="zenmode.html" class="zen-btn" title="Zen Meditation Mode">
+        <i class="fas fa-seedling"></i>
+        <span>Zen Mode</span>
+      </a>
+    </div>
+
+    <script src="scripts/who-are-you.js"></script>
+  </body>
+</html>

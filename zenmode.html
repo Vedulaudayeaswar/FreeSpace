@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zen Meditation Space - Find Your Inner Peace</title>
+    <link rel="stylesheet" href="styles/zenmode.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="zen-container">
+      <!-- Header -->
+      <header class="zen-header">
+        <div class="header-content">
+          <div class="zen-logo">
+            <div class="lotus-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <h1>Zen Meditation Space</h1>
+          </div>
+          <p class="zen-subtitle">
+            Find your center and breathe through the stress
+          </p>
+          <button class="close-zen" id="closeZen" title="Close Zen Mode">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Audio Settings Panel -->
+      <div class="audio-settings-panel" id="audioPanel">
+        <h3><i class="fas fa-music"></i> Audio Settings</h3>
+        <div class="audio-path-input">
+          <label for="audioPath">Meditation Audio Path:</label>
+          <input
+            type="text"
+            id="audioPath"
+            placeholder="Enter path to your meditation audio (e.g., audio/meditation.mp3)"
+          />
+          <button id="testAudio" class="test-audio-btn">
+            <i class="fas fa-play"></i> Test
+          </button>
+        </div>
+        <div class="volume-control">
+          <label for="volumeSlider">Volume:</label>
+          <input type="range" id="volumeSlider" min="0" max="100" value="50" />
+          <span id="volumeValue">50%</span>
+        </div>
+        <div class="audio-presets">
+          <h4>Nature Sound Presets:</h4>
+          <button class="preset-btn" data-path="audio/nature.m4a">
+            <i class="fas fa-leaf"></i> Nature Sounds
+          </button>
+          <button class="preset-btn" data-path="audio/rain.m4a">
+            <i class="fas fa-cloud-rain"></i> Rain Sounds
+          </button>
+          <button class="preset-btn" data-path="audio/ocean.m4a">
+            <i class="fas fa-water"></i> Ocean Waves
+          </button>
+          <button class="preset-btn" data-path="audio/forest.m4a">
+            <i class="fas fa-tree"></i> Forest Sounds
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <main class="zen-main">
+        <!-- Exercise Selection Panel -->
+        <aside class="exercise-panel">
+          <div class="panel-header">
+            <h2><i class="fas fa-lotus"></i> Meditation Exercises</h2>
+            <button
+              class="audio-settings-toggle"
+              id="audioToggle"
+              title="Audio Settings"
+            >
+              <i class="fas fa-cog"></i>
+            </button>
+          </div>
+
+          <!-- Breathing Exercises -->
+          <div class="exercise-category">
+            <h3><i class="fas fa-lungs"></i> Breathing</h3>
+
+            <div class="exercise-card active" data-exercise="breathing-478">
+              <div class="exercise-icon">
+                <i class="fas fa-wind"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>4-7-8 Breathing</h4>
+                <p>5 minutes • Deep Relaxation</p>
+                <span class="difficulty easy">Easy</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="box-breathing">
+              <div class="exercise-icon">
+                <i class="fas fa-square"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Box Breathing</h4>
+                <p>5 minutes • Focus & Calm</p>
+                <span class="difficulty medium">Medium</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="triangle-breathing">
+              <div class="exercise-icon">
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Triangle Breathing</h4>
+                <p>6 minutes • Balance</p>
+                <span class="difficulty easy">Easy</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mindfulness Exercises -->
+          <div class="exercise-category">
+            <h3><i class="fas fa-brain"></i> Mindfulness</h3>
+
+            <div class="exercise-card" data-exercise="mindful-awareness">
+              <div class="exercise-icon">
+                <i class="fas fa-eye"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Mindful Awareness</h4>
+                <p>10 minutes • Present Moment</p>
+                <span class="difficulty medium">Medium</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="loving-kindness">
+              <div class="exercise-icon">
+                <i class="fas fa-heart"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Loving Kindness</h4>
+                <p>12 minutes • Compassion</p>
+                <span class="difficulty easy">Easy</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="walking-meditation">
+              <div class="exercise-icon">
+                <i class="fas fa-walking"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Walking Meditation</h4>
+                <p>15 minutes • Movement</p>
+                <span class="difficulty medium">Medium</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Body & Relaxation -->
+          <div class="exercise-category">
+            <h3><i class="fas fa-body"></i> Body & Relaxation</h3>
+
+            <div class="exercise-card" data-exercise="body-scan">
+              <div class="exercise-icon">
+                <i class="fas fa-body"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Progressive Body Scan</h4>
+                <p>15 minutes • Deep Relaxation</p>
+                <span class="difficulty easy">Easy</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="muscle-relaxation">
+              <div class="exercise-icon">
+                <i class="fas fa-dumbbell"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Progressive Muscle Relaxation</h4>
+                <p>20 minutes • Tension Release</p>
+                <span class="difficulty medium">Medium</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="yoga-nidra">
+              <div class="exercise-icon">
+                <i class="fas fa-bed"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Yoga Nidra</h4>
+                <p>25 minutes • Deep Rest</p>
+                <span class="difficulty advanced">Advanced</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualization -->
+          <div class="exercise-category">
+            <h3><i class="fas fa-mountain"></i> Visualization</h3>
+
+            <div class="exercise-card" data-exercise="peaceful-place">
+              <div class="exercise-icon">
+                <i class="fas fa-tree"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Peaceful Place</h4>
+                <p>12 minutes • Inner Sanctuary</p>
+                <span class="difficulty easy">Easy</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="light-meditation">
+              <div class="exercise-icon">
+                <i class="fas fa-sun"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Golden Light</h4>
+                <p>18 minutes • Energy Healing</p>
+                <span class="difficulty medium">Medium</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="chakra-visualization">
+              <div class="exercise-icon">
+                <i class="fas fa-circle-notch"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Chakra Journey</h4>
+                <p>30 minutes • Energy Alignment</p>
+                <span class="difficulty advanced">Advanced</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Sessions -->
+          <div class="exercise-category">
+            <h3><i class="fas fa-clock"></i> Quick Sessions</h3>
+
+            <div class="exercise-card" data-exercise="quick-calm">
+              <div class="exercise-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Quick Calm</h4>
+                <p>2 minutes • Instant Relief</p>
+                <span class="difficulty easy">Easy</span>
+              </div>
+            </div>
+
+            <div class="exercise-card" data-exercise="stress-release">
+              <div class="exercise-icon">
+                <i class="fas fa-leaf"></i>
+              </div>
+              <div class="exercise-info">
+                <h4>Stress Release</h4>
+                <p>3 minutes • Tension Relief</p>
+                <span class="difficulty easy">Easy</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Exercise Display Area -->
+        <section class="exercise-display">
+          <!-- Timer Display -->
+          <div class="timer-section">
+            <div class="timer-circle" id="timerCircle">
+              <div class="timer-inner">
+                <div class="time-display" id="timeDisplay">05:00</div>
+                <div class="timer-label" id="timerLabel">Ready to begin...</div>
+                <div class="breath-count" id="breathCount"></div>
+              </div>
+              <svg class="timer-progress" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="90" class="progress-bg" />
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="90"
+                  class="progress-fill"
+                  id="progressFill"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Exercise Instructions -->
+          <div class="instructions-panel" id="instructionsPanel">
+            <div class="instruction-content">
+              <h3 id="exerciseTitle">4-7-8 Breathing Exercise</h3>
+              <div class="instruction-steps" id="instructionSteps">
+                <div class="step active">
+                  <div class="step-number">1</div>
+                  <p>
+                    Sit comfortably with your back straight and feet flat on the
+                    floor
+                  </p>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <p>Place one hand on your chest and one on your belly</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <p>Breathe in through your nose for 4 counts</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">4</div>
+                  <p>Hold your breath for 7 counts</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">5</div>
+                  <p>Exhale through your mouth for 8 counts</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Control Buttons -->
+          <div class="control-panel">
+            <button class="control-btn secondary" id="prevBtn">
+              <i class="fas fa-step-backward"></i>
+              Previous
+            </button>
+
+            <button class="control-btn primary" id="playPauseBtn">
+              <i class="fas fa-play"></i>
+              Start Session
+            </button>
+
+            <button class="control-btn secondary" id="nextBtn">
+              <i class="fas fa-step-forward"></i>
+              Next
+            </button>
+
+            <button class="control-btn tertiary" id="resetBtn">
+              <i class="fas fa-redo"></i>
+              Reset
+            </button>
+          </div>
+
+          <!-- Settings Panel -->
+          <div class="session-settings" id="sessionSettings">
+            <div class="setting-group">
+              <label for="sessionDuration">Duration (minutes):</label>
+              <select id="sessionDuration">
+                <option value="2">2 min</option>
+                <option value="5" selected>5 min</option>
+                <option value="10">10 min</option>
+                <option value="15">15 min</option>
+                <option value="20">20 min</option>
+                <option value="30">30 min</option>
+              </select>
+            </div>
+
+            <div class="setting-group">
+              <label for="breathingRatio">Breathing Ratio:</label>
+              <select id="breathingRatio">
+                <option value="4-4-4-4">4-4-4-4 (Box)</option>
+                <option value="4-7-8-0" selected>4-7-8 (Relaxing)</option>
+                <option value="6-6-6-6">6-6-6-6 (Deep)</option>
+                <option value="4-4-6-2">4-4-6-2 (Triangle)</option>
+              </select>
+            </div>
+
+            <div class="setting-group">
+              <label for="guideVoice">Guide Voice:</label>
+              <select id="guideVoice">
+                <option value="on" selected>On</option>
+                <option value="off">Off</option>
+              </select>
+            </div>
+
+            <div class="setting-group">
+              <label for="backgroundSounds">Background Sounds:</label>
+              <select id="backgroundSounds">
+                <option value="none">None</option>
+                <option value="nature" selected>Nature</option>
+                <option value="rain">Rain</option>
+                <option value="ocean">Ocean</option>
+                <option value="forest">Forest</option>
+              </select>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Completion Modal -->
+      <div class="completion-modal" id="completionModal">
+        <div class="modal-content">
+          <div class="completion-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>Session Complete!</h3>
+          <p>
+            Well done! You've completed your meditation session. Take a moment
+            to notice how you feel.
+          </p>
+          <div class="session-stats">
+            <div class="stat">
+              <span class="stat-number" id="completedTime">5</span>
+              <span class="stat-label">Minutes</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number" id="completedBreaths">40</span>
+              <span class="stat-label">Breaths</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="control-btn secondary" id="sessionAgain">
+              <i class="fas fa-redo"></i>
+              Another Session
+            </button>
+            <button class="control-btn primary" id="closeModal">
+              <i class="fas fa-heart"></i>
+              Complete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Elements -->
+      <div class="floating-elements">
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+      </div>
+
+      <!-- Audio Elements -->
+      <audio id="meditationAudio" preload="auto" loop></audio>
+      <audio id="backgroundAudio" preload="auto" loop></audio>
+      <audio id="bellSound" preload="auto">
+        <source
+          src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFA
+          src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmMcBkCS2/LNeSsFJHfH8N2QQAoUXrTp66hVFA=="
+          type="audio/wav"
+        />
+      </audio>
+    </div>
+
+    <script src="scripts/zenmode.js"></script>
+  </body>
+</html>

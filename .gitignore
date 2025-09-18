@@ -1,0 +1,10 @@
+.env
+backend/.env
+*.env
+__pycache__/
+*.pyc
+venv/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log

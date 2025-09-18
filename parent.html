@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParentBot - Your AI Parenting Assistant</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/parent.css" />
+  </head>
+  <body>
+    <div class="background-animation">
+      <div class="particles"></div>
+      <div class="gradient-bg"></div>
+    </div>
+
+    <div class="home-nav">
+      <a href="who-are-you.html" class="home-btn" title="Go to Home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a
+        href="codegent.html"
+        class="codegent-btn"
+        title="CodeGent - Coding Assistant"
+      >
+        <i class="fas fa-code"></i>
+        <span>CodeGent</span>
+      </a>
+      <a href="zenmode.html" class="zen-btn" title="Zen Meditation Mode">
+        <i class="fas fa-seedling"></i>
+        <span>Zen Mode</span>
+      </a>
+    </div>
+
+    <div class="container">
+      <div class="chat-container glass-panel">
+        <div class="chat-header">
+          <div class="parent-avatar">
+            <i class="fas fa-home"></i>
+          </div>
+          <div class="chat-info">
+            <h2>ParentBot - Your AI Assistant</h2>
+            <div id="connectionStatus" class="status">
+              Connecting to ParentBot...
+            </div>
+          </div>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+          <div class="message ai-message">
+            <div class="message-avatar">
+              <i class="fas fa-home"></i>
+            </div>
+            <div class="message-content">
+              <p>
+                Hello! I'm ParentBot, your AI parenting assistant. Give me a
+                moment to get ready... 🏠
+              </p>
+              <div class="message-time">Just now</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="voice-controls">
+          <button id="talkButton" class="voice-btn" disabled>
+            <i class="fas fa-microphone"></i>
+            <span>Talk to ParentBot</span>
+          </button>
+          <button id="stopButton" class="voice-btn secondary">
+            <i class="fas fa-stop"></i>
+            <span>Stop</span>
+          </button>
+        </div>
+
+        <div class="quick-responses">
+          <button
+            class="quick-btn meal-btn"
+            data-response="I need help planning meals for today"
+          >
+            <i class="fas fa-utensils"></i>
+            Meal Planning
+          </button>
+          <button
+            class="quick-btn todo-btn"
+            data-response="Help me create a todo list for today"
+          >
+            <i class="fas fa-list-check"></i>
+            Todo List
+          </button>
+          <button
+            class="quick-btn parenting-btn"
+            data-response="Give me parenting tips for better communication with kids"
+          >
+            <i class="fas fa-heart"></i>
+            Parenting Tips
+          </button>
+          <button
+            class="quick-btn story-btn"
+            data-response="Tell me a bedtime story for my 5 year old"
+          >
+            <i class="fas fa-book"></i>
+            Bedtime Stories
+          </button>
+          <button
+            class="quick-btn money-btn"
+            data-response="Help me with family budget and money management"
+          >
+            <i class="fas fa-piggy-bank"></i>
+            Money Management
+          </button>
+        </div>
+      </div>
+
+      <div class="support-sidebar">
+        <div class="parentbot-info glass-panel">
+          <div class="parentbot-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h3>Meet ParentBot</h3>
+          <p>
+            Your AI-powered parenting companion, designed to make family life
+            easier and more organized.
+          </p>
+          <div class="parentbot-features">
+            <div class="feature">
+              <i class="fas fa-utensils"></i>
+              <span>Meal Planning</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-list-check"></i>
+              <span>Smart Todo Lists</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-book-open"></i>
+              <span>Expert Parenting Tips</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-moon"></i>
+              <span>Bedtime Stories</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-chart-line"></i>
+              <span>Money Management</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tips-card glass-panel">
+          <h3><i class="fas fa-lightbulb"></i> Parenting Tip of the Day</h3>
+          <p>
+            "The days are long, but the years are short. Cherish every moment
+            with your children."
+          </p>
+        </div>
+
+        <div class="time-card glass-panel">
+          <h3><i class="fas fa-clock"></i> Current Time (IST)</h3>
+          <div id="currentTime" class="time-display">Loading...</div>
+        </div>
+
+        <div class="emergency-card glass-panel">
+          <h3><i class="fas fa-phone-alt"></i> Family Emergency</h3>
+          <p>Police: <a href="tel:100">100</a></p>
+          <p>Ambulance: <a href="tel:108">108</a></p>
+          <p>Child Helpline: <a href="tel:1098">1098</a></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/parent-talk-with-me.js"></script>
+  </body>
+</html>

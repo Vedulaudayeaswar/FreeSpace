@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mood Check - FreeSpace</title>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/face-auth.css" />
+  </head>
+  <body>
+    <div class="background-animation">
+      <div class="particles"></div>
+      <div class="gradient-bg"></div>
+    </div>
+
+    <div class="container">
+      <div class="card glass-panel">
+        <div class="face-auth-header">
+          <h2>Mood Check</h2>
+          <p>Let's see how you're feeling today</p>
+        </div>
+
+        <div class="face-auth-container">
+          <div class="camera-feed">
+            <video id="video" width="400" height="300" autoplay muted></video>
+            <canvas id="canvas" width="400" height="300"></canvas>
+          </div>
+
+          <div class="detection-status">
+            <div class="status-indicator" id="statusIndicator">
+              <div class="indicator-dot"></div>
+              <span>Initializing camera...</span>
+            </div>
+          </div>
+
+          <div class="happiness-meter">
+            <div class="meter-label">
+              <span>Happiness Level</span>
+              <span id="happinessValue">0%</span>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-fill" id="happinessMeter"></div>
+            </div>
+          </div>
+
+          <button id="analyzeBtn" class="btn primary" disabled>
+            <i class="fas fa-smile"></i>
+            Analyze My Mood
+          </button>
+        </div>
+
+        <div class="privacy-note">
+          <p>
+            <i class="fas fa-shield-alt"></i> Your facial data is processed
+            locally and never stored on our servers
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/face-auth.js"></script>
+    <script>
+      // Login success handler
+      function onLoginSuccess() {
+        window.location.href = "face-auth.html";
+      }
+
+      // Login form submission
+      const loginForm = document.getElementById("loginForm");
+      if (loginForm) {
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("loginEmail").value;
+          const password = document.getElementById("loginPassword").value;
+
+          // Validation
+          if (!email || !password) {
+            showNotification("Please fill in all fields", "error");
+            return;
+          }
+
+          // Simulate login process
+          showNotification("Logging in...", "success");
+
+          // Store user data and redirect to face-auth.html
+          setTimeout(() => {
+            localStorage.setItem(
+              "currentUser",
+              JSON.stringify({
+                email: email,
+                name: email.split("@")[0], // Simple way to get a name for demo
+              })
+            );
+
+            window.location.href = "face-auth.html"; // Changed from 'who-are-you.html'
+          }, 1500);
+        });
+      }
+
+      // Registration form submission
+      const registerForm = document.getElementById("registerForm");
+      if (registerForm) {
+        registerForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById("registerName").value;
+          const email = document.getElementById("registerEmail").value;
+          const password = document.getElementById("registerPassword").value;
+          const confirmPassword = document.getElementById(
+            "registerConfirmPassword"
+          ).value;
+          const termsAgree = document.getElementById("termsAgree").checked;
+
+          // Validation
+          if (!name || !email || !password || !confirmPassword) {
+            showNotification("Please fill in all fields", "error");
+            return;
+          }
+
+          if (password !== confirmPassword) {
+            showNotification("Passwords do not match", "error");
+            return;
+          }
+
+          if (!termsAgree) {
+            showNotification(
+              "Please agree to the terms and conditions",
+              "error"
+            );
+            return;
+          }
+
+          // Simulate registration process
+          showNotification("Creating your account...", "success");
+
+          // Store user data and redirect to face-auth.html
+          setTimeout(() => {
+            localStorage.setItem(
+              "currentUser",
+              JSON.stringify({
+                name: name,
+                email: email,
+              })
+            );
+
+            window.location.href = "face-auth.html"; // Changed from 'who-are-you.html'
+          }, 1500);
+        });
+      }
+    </script>
+  </body>
+</html>

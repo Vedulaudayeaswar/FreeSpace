@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeGent - Your Personal Coding Agent</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/codegent.css" />
+  </head>
+  <body>
+    <div class="background-animation">
+      <div class="particles"></div>
+      <div class="gradient-bg"></div>
+    </div>
+
+    <div class="home-nav">
+      <a href="who-are-you.html" class="home-btn" title="Go to Home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="zenmode.html" class="zen-btn" title="Zen Meditation Mode">
+        <i class="fas fa-seedling"></i>
+        <span>Zen Mode</span>
+      </a>
+    </div>
+
+    <div class="container">
+      <!-- Header -->
+      <div class="codegent-header glass-panel">
+        <div class="logo-section">
+          <div class="codegent-logo">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="title-section">
+            <h1>CodeGent</h1>
+            <p class="slogan">Your Personal Coding Agent</p>
+          </div>
+        </div>
+
+        <div class="language-selector">
+          <label for="languageSelect">Choose Language:</label>
+          <select id="languageSelect" class="language-dropdown">
+            <option value="">Select Language</option>
+            <option value="python">🐍 Python</option>
+            <option value="java">☕ Java</option>
+            <option value="cpp">⚡ C++</option>
+            <option value="golang">🐹 Go</option>
+          </select>
+        </div>
+
+        <div class="status-indicator">
+          <div id="connectionStatus" class="status">
+            Initializing CodeGent...
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Chat Section -->
+        <div class="chat-section glass-panel">
+          <div class="chat-header">
+            <h3><i class="fas fa-comments"></i> Code Discussion</h3>
+            <div class="chat-controls">
+              <button id="clearChatBtn" class="control-btn" title="Clear Chat">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button
+                id="exportChatBtn"
+                class="control-btn"
+                title="Export Chat"
+              >
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="chatMessages" class="chat-messages">
+            <div class="message ai-message">
+              <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+              </div>
+              <div class="message-content">
+                <p>
+                  Welcome to CodeGent! I'm your personal coding agent ready to
+                  help you with Python, Java, C++, and Go programming. Select a
+                  language above and ask me anything!
+                </p>
+                <div class="message-time">Just now</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-section">
+            <div class="input-container">
+              <textarea
+                id="userInput"
+                placeholder="Ask me about coding concepts, request solutions, or paste your code for review..."
+                rows="3"
+              ></textarea>
+              <div class="input-controls">
+                <button id="micButton" class="control-btn" title="Voice Input">
+                  <i class="fas fa-microphone"></i>
+                </button>
+                <button id="sendButton" class="send-btn">
+                  <i class="fas fa-paper-plane"></i>
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Editor Section -->
+        <div class="code-section glass-panel">
+          <div class="code-header">
+            <h3><i class="fas fa-file-code"></i> Code Workspace</h3>
+            <div class="code-controls">
+              <button id="runCodeBtn" class="control-btn" title="Run Code">
+                <i class="fas fa-play"></i> Run
+              </button>
+              <button id="clearCodeBtn" class="control-btn" title="Clear Code">
+                <i class="fas fa-eraser"></i>
+              </button>
+              <button id="copyCodeBtn" class="control-btn" title="Copy Code">
+                <i class="fas fa-copy"></i>
+              </button>
+              <button
+                id="downloadCodeBtn"
+                class="control-btn"
+                title="Download Code"
+              >
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="code-editor-container">
+            <textarea
+              id="codeEditor"
+              placeholder="// Your code will appear here or you can write your own..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="code-output">
+            <div class="output-header">
+              <h4><i class="fas fa-terminal"></i> Output</h4>
+              <button
+                id="clearOutputBtn"
+                class="control-btn small"
+                title="Clear Output"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div id="codeOutput" class="output-content">
+              <p class="output-placeholder">Code output will appear here...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions glass-panel">
+        <h4><i class="fas fa-lightning-bolt"></i> Quick Actions</h4>
+        <div class="quick-buttons">
+          <button class="quick-btn" data-action="explain-concept">
+            <i class="fas fa-lightbulb"></i>
+            Explain Concept
+          </button>
+          <button class="quick-btn" data-action="debug-code">
+            <i class="fas fa-bug"></i>
+            Debug Code
+          </button>
+          <button class="quick-btn" data-action="optimize-code">
+            <i class="fas fa-tachometer-alt"></i>
+            Optimize Code
+          </button>
+          <button class="quick-btn" data-action="generate-tests">
+            <i class="fas fa-vial"></i>
+            Generate Tests
+          </button>
+          <button class="quick-btn" data-action="code-review">
+            <i class="fas fa-search"></i>
+            Code Review
+          </button>
+          <button class="quick-btn" data-action="algorithm-help">
+            <i class="fas fa-project-diagram"></i>
+            Algorithm Help
+          </button>
+        </div>
+      </div>
+
+      <!-- Learning Resources -->
+      <div class="resources-section glass-panel">
+        <h4><i class="fas fa-book"></i> Learning Resources</h4>
+        <div class="resource-grid">
+          <div class="resource-card" data-lang="python">
+            <i class="fab fa-python"></i>
+            <h5>Python</h5>
+            <p>Object-oriented, interpreted language</p>
+          </div>
+          <div class="resource-card" data-lang="java">
+            <i class="fab fa-java"></i>
+            <h5>Java</h5>
+            <p>Platform-independent, robust language</p>
+          </div>
+          <div class="resource-card" data-lang="cpp">
+            <i class="fas fa-code"></i>
+            <h5>C++</h5>
+            <p>High-performance, system programming</p>
+          </div>
+          <div class="resource-card" data-lang="golang">
+            <i class="fas fa-code-branch"></i>
+            <h5>Go</h5>
+            <p>Fast, simple, concurrent language</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- CodeGent Scripts -->
+    <script src="scripts/codegent.js"></script>
+  </body>
+</html>
