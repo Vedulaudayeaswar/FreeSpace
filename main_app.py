@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 from flask_cors import CORS
 import os
 import google.generativeai as genai
-import speech_recognition as sr
-import pyttsx3
+# REMOVE THESE TWO LINES:
+# import speech_recognition as sr
+# import pyttsx3
 import threading
 import json
 import tempfile
@@ -25,7 +26,7 @@ from dotenv import load_dotenv
 
 # Load .env file - check multiple locations for flexibility
 env_locations = [
-    '.env',                    # Root directory (for production/Render)
+    '.env',                    # Root directory (for production/Vercel)
     './backend/.env',          # Backend folder (for development)
     'backend/.env',           # Alternative backend path
 ]
@@ -60,8 +61,16 @@ except Exception as e:
     logger.error(f"Failed to configure Gemini AI: {e}")
     model = None
 
-# Initialize speech services
+# Initialize speech services with safe imports
+recognizer = None
+microphone = None
+tts_engine = None
+
 try:
+    # Import speech libraries inside try-catch to prevent crashes
+    import speech_recognition as sr
+    import pyttsx3
+    
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
     tts_engine = pyttsx3.init()
@@ -76,13 +85,14 @@ try:
     
     tts_engine.setProperty('rate', 170)
     tts_engine.setProperty('volume', 0.9)
-    logger.info("Speech services initialized successfully")
+    logger.info("✅ Speech services initialized successfully")
     
+except ImportError as e:
+    logger.warning(f"⚠️  Speech libraries not available: {e}")
+    logger.warning("Voice features will be disabled, but chat features will work perfectly")
 except Exception as e:
-    logger.error(f"Failed to initialize speech services: {e}")
-    recognizer = None
-    microphone = None
-    tts_engine = None
+    logger.warning(f"⚠️  Speech services initialization failed: {e}")
+    logger.warning("Voice features will be disabled, but chat features will work perfectly")
 
 # =================================================================================
 # STUDENT ASSISTANT (MAYA) CLASS
@@ -939,6 +949,8 @@ def respond_to_student():
         voice_response = None
         if enable_voice and tts_engine:
             try:
+                # Import pyttsx3 locally to avoid top-level import issues
+                import pyttsx3
                 engine = pyttsx3.init()
                 
                 voices = engine.getProperty('voices')
@@ -966,6 +978,9 @@ def respond_to_student():
                 
                 logger.info("Voice response generated successfully")
                 
+            except ImportError as import_error:
+                logger.warning(f"pyttsx3 not available for voice response: {import_error}")
+                voice_response = None
             except Exception as voice_error:
                 logger.error(f"Voice generation error: {voice_error}")
                 voice_response = None
@@ -1002,9 +1017,12 @@ def speak_text_student():
             })
         
         def speak_async():
-            if tts_engine:
-                tts_engine.say(text)
-                tts_engine.runAndWait()
+            try:
+                engine = pyttsx3.init()
+                engine.say(text)
+                engine.runAndWait()
+            except Exception as e:
+                logger.error(f"TTS error: {e}")
         
         thread = threading.Thread(target=speak_async)
         thread.daemon = True
