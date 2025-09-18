@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 # FreeSpace - AI Mental Wellness Platform 🧠💙
 
 A comprehensive AI-powered mental wellness platform with specialized assistants.
