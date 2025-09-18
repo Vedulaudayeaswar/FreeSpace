@@ -1106,12 +1106,50 @@ def start_parent_conversation():
         'session_id': parent_assistant.parent_context['session_start']
     })
 
+@app.route('/api/parent/listen', methods=['POST'])
+def listen_to_parent():
+    """Capture parent's voice input"""
+    try:
+        if not recognizer or not microphone:
+            return jsonify({
+                'success': False,
+                'error': 'Voice recognition not available',
+                'message': "Voice recognition is not available. Please type your message."
+            })
+        
+        # Use the same voice input processing as student
+        logger.info("Listening for parent input...")
+        
+        with microphone as source:
+            recognizer.adjust_for_ambient_noise(source, duration=1)
+            
+        with microphone as source:
+            audio = recognizer.listen(source, timeout=10, phrase_time_limit=10)
+        
+        text = recognizer.recognize_google(audio)
+        logger.info(f"Parent said: {text}")
+        
+        return jsonify({
+            'success': True,
+            'message': text,
+            'is_error': False
+        })
+        
+    except Exception as e:
+        logger.error(f"Parent voice input error: {e}")
+        return jsonify({
+            'success': False,
+            'error': 'Failed to capture voice input',
+            'message': "I'm having trouble hearing you right now. Could you try again or type your message?"
+        })
+
 @app.route('/api/parent/respond', methods=['POST'])
 def respond_to_parent():
-    """Generate AI response to parent message"""
+    """Generate AI response to parent message with voice support"""
     try:
         data = request.get_json()
         user_message = data.get('message', '')
+        enable_voice = data.get('enable_voice', True)
         
         if not user_message:
             return jsonify({
@@ -1121,54 +1159,62 @@ def respond_to_parent():
         
         ai_response = parent_assistant.generate_ai_response(user_message)
         
+        # Generate voice response for parent (same as student)
+        voice_response = None
+        if enable_voice and tts_engine:
+            try:
+                # Import pyttsx3 locally to avoid top-level import issues
+                import pyttsx3
+                engine = pyttsx3.init()
+                
+                voices = engine.getProperty('voices')
+                if voices:
+                    for voice in voices:
+                        if 'female' in voice.name.lower() or 'zira' in voice.name.lower():
+                            engine.setProperty('voice', voice.id)
+                            break
+                
+                engine.setProperty('rate', 170)  # Slightly slower for parents
+                engine.setProperty('volume', 0.9)
+                
+                with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
+                    temp_filename = temp_file.name
+                
+                engine.save_to_file(ai_response, temp_filename)
+                engine.runAndWait()
+                
+                if os.path.exists(temp_filename):
+                    with open(temp_filename, 'rb') as audio_file:
+                        audio_data = audio_file.read()
+                        voice_response = base64.b64encode(audio_data).decode('utf-8')
+                    
+                    os.unlink(temp_filename)
+                
+                logger.info("Parent voice response generated successfully")
+                
+            except ImportError as import_error:
+                logger.warning(f"pyttsx3 not available for parent voice response: {import_error}")
+                voice_response = None
+            except Exception as voice_error:
+                logger.error(f"Parent voice generation error: {voice_error}")
+                voice_response = None
+        
         return jsonify({
             'success': True,
             'response': ai_response,
+            'voice_response': voice_response,
+            'has_voice': voice_response is not None,
             'task_type': parent_assistant.detect_task_type(user_message),
             'conversation_count': len(parent_assistant.conversation_history),
             'parent_context': parent_assistant.parent_context
         })
         
     except Exception as e:
-        logger.error(f"Response generation error: {e}")
+        logger.error(f"Parent response generation error: {e}")
         return jsonify({
             'success': False,
             'error': 'Failed to generate response',
             'response': "I'm here to help you with parenting tasks. What do you need assistance with today?"
-        })
-
-@app.route('/api/parent/speak', methods=['POST'])
-def speak_text_parent():
-    """Convert text to speech for parents"""
-    try:
-        data = request.get_json()
-        text = data.get('text', '')
-        
-        if not text:
-            return jsonify({
-                'success': False,
-                'error': 'No text provided'
-            })
-        
-        def speak_async():
-            if tts_engine:
-                tts_engine.say(text)
-                tts_engine.runAndWait()
-        
-        thread = threading.Thread(target=speak_async)
-        thread.daemon = True
-        thread.start()
-        
-        return jsonify({
-            'success': True,
-            'message': 'Speaking response...'
-        })
-        
-    except Exception as e:
-        logger.error(f"TTS error: {e}")
-        return jsonify({
-            'success': False,
-            'error': 'Failed to speak text'
         })
 
 # =================================================================================
