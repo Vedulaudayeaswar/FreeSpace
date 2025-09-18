@@ -1,6 +1,12 @@
 class LunaProfessionalAssistant {
   constructor() {
-    this.baseURL = "http://localhost:5000/api";
+    // Updated baseURL for production
+    this.baseURL =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000/api"
+        : "https://freespace-ai-platform.onrender.com/api";
+
     this.sessionStartTime = Date.now();
     this.messageCount = 0;
     this.isRecording = false;
@@ -360,8 +366,8 @@ class LunaProfessionalAssistant {
     try {
       this.updateConnectionStatus("Connecting to Luna...", false);
 
-      // Test backend connection first
-      const testResponse = await fetch("http://localhost:5000/");
+      // Test backend connection first - Updated URL
+      const testResponse = await fetch(this.baseURL.replace("/api", "/"));
       if (!testResponse.ok) throw new Error("Luna backend not running");
 
       const response = await this.makeRequest(
@@ -399,7 +405,7 @@ class LunaProfessionalAssistant {
       console.error("❌ Connection failed:", error);
       this.updateConnectionStatus("Connection failed", false);
       this.updateStatus(
-        "Connection failed - Make sure Luna backend is running on port 5000",
+        "Connection failed - Make sure Luna backend is running",
         "error"
       );
       this.assistantStatus.textContent = "Having trouble connecting";

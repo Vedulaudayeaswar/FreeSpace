@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Maya Voice Assistant loading...");
 
-  // Configuration
-  const BACKEND_URL = "http://127.0.0.1:5000/api";
+  // Configuration - Updated for production
+  const BACKEND_URL =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+      ? "http://127.0.0.1:5000/api"
+      : "https://freespace-ai-platform.onrender.com/api";
 
   // DOM Elements
   const chatMessages = document.getElementById("chatMessages");
@@ -257,13 +261,13 @@ document.addEventListener("DOMContentLoaded", function () {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // Initialize Connection
+  // Initialize Connection - Updated URL
   async function initializeConnection() {
     try {
       updateStatus("Connecting to Maya...", "connecting");
 
-      // Test backend connection
-      const testResponse = await fetch("http://127.0.0.1:5000/");
+      // Test backend connection - Updated URL
+      const testResponse = await fetch(BACKEND_URL.replace("/api", "/"));
       if (!testResponse.ok) throw new Error("Backend not running");
 
       // Start conversation

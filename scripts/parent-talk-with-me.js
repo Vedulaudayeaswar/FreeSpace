@@ -10,6 +10,13 @@ class ParentVoiceAssistant {
       preferences: [],
     };
 
+    // Dynamic backend URL for production
+    this.backendURL =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000/api"
+        : "https://freespace-ai-platform.onrender.com/api";
+
     // DOM elements - Updated to match your HTML
     this.chatMessages = null;
     this.talkButton = null;
@@ -142,15 +149,19 @@ class ParentVoiceAssistant {
 
       this.parentContext.name = userName;
 
-      const response = await fetch("/api/parent/start-conversation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: userName,
-        }),
-      });
+      // Updated to use dynamic URL
+      const response = await fetch(
+        `${this.backendURL}/parent/start-conversation`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: userName,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -214,7 +225,8 @@ class ParentVoiceAssistant {
     this.showStatus("ParentBot is thinking...", "processing");
 
     try {
-      const response = await fetch("/api/parent/respond", {
+      // Updated to use dynamic URL
+      const response = await fetch(`${this.backendURL}/parent/respond`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -320,8 +332,8 @@ class ParentVoiceAssistant {
 
   async speakText(text) {
     try {
-      // Try server TTS first
-      const response = await fetch("/api/parent/speak", {
+      // Updated to use dynamic URL
+      const response = await fetch(`${this.backendURL}/parent/speak`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
