@@ -61,38 +61,59 @@ except Exception as e:
     logger.error(f"Failed to configure Gemini AI: {e}")
     model = None
 
-# Initialize speech services with safe imports
+# Initialize speech services with fallback for cloud deployment
 recognizer = None
 microphone = None
 tts_engine = None
+speech_available = False
 
 try:
-    # Import speech libraries inside try-catch to prevent crashes
+    # Import speech libraries with fallback handling
     import speech_recognition as sr
     import pyttsx3
     
     recognizer = sr.Recognizer()
-    microphone = sr.Microphone()
-    tts_engine = pyttsx3.init()
     
-    # Configure TTS voice
-    voices = tts_engine.getProperty('voices')
-    if voices:
-        for voice in voices:
-            if 'female' in voice.name.lower() or 'zira' in voice.name.lower():
-                tts_engine.setProperty('voice', voice.id)
-                break
+    # Try to initialize microphone with fallback
+    try:
+        microphone = sr.Microphone()
+        speech_available = True
+        logger.info("✅ Microphone initialized successfully")
+    except Exception as mic_error:
+        logger.warning(f"⚠️ Microphone not available (cloud environment): {mic_error}")
+        microphone = None
+        speech_available = False
     
-    tts_engine.setProperty('rate', 170)
-    tts_engine.setProperty('volume', 0.9)
-    logger.info("✅ Speech services initialized successfully")
+    # Initialize TTS
+    try:
+        tts_engine = pyttsx3.init()
+        
+        # Configure TTS voice
+        voices = tts_engine.getProperty('voices')
+        if voices:
+            for voice in voices:
+                if 'female' in voice.name.lower() or 'zira' in voice.name.lower():
+                    tts_engine.setProperty('voice', voice.id)
+                    break
+        
+        tts_engine.setProperty('rate', 170)
+        tts_engine.setProperty('volume', 0.9)
+        logger.info("✅ Text-to-speech initialized successfully")
+        
+    except Exception as tts_error:
+        logger.warning(f"⚠️ Text-to-speech not available (cloud environment): {tts_error}")
+        tts_engine = None
+    
+    logger.info("✅ Speech services initialized (with cloud environment adaptations)")
     
 except ImportError as e:
-    logger.warning(f"⚠️  Speech libraries not available: {e}")
-    logger.warning("Voice features will be disabled, but chat features will work perfectly")
+    logger.warning(f"⚠️ Speech libraries not available: {e}")
+    logger.warning("Voice features will be disabled, but all chat features work perfectly")
+    speech_available = False
 except Exception as e:
-    logger.warning(f"⚠️  Speech services initialization failed: {e}")
-    logger.warning("Voice features will be disabled, but chat features will work perfectly")
+    logger.warning(f"⚠️ Speech services initialization failed: {e}")
+    logger.warning("Voice features will be disabled, but all chat features work perfectly")
+    speech_available = False
 
 # =================================================================================
 # STUDENT ASSISTANT (MAYA) CLASS
