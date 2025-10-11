@@ -462,6 +462,128 @@ class ParentVoiceAssistant {
   }
 }
 
+// Add this to all your chat JavaScript files (student, parent, professional, codegent)
+
+class BrowserSpeechHandler {
+  constructor() {
+    this.recognition = null;
+    this.isListening = false;
+    this.initSpeechRecognition();
+  }
+
+  initSpeechRecognition() {
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      this.recognition = new SpeechRecognition();
+
+      this.recognition.continuous = false;
+      this.recognition.interimResults = false;
+      this.recognition.lang = "en-US";
+
+      this.recognition.onstart = () => {
+        this.isListening = true;
+        console.log("🎤 Listening...");
+        this.updateMicButton(true);
+      };
+
+      this.recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        console.log("🗣️ Heard:", transcript);
+        this.handleSpeechResult(transcript);
+      };
+
+      this.recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        this.isListening = false;
+        this.updateMicButton(false);
+      };
+
+      this.recognition.onend = () => {
+        this.isListening = false;
+        this.updateMicButton(false);
+      };
+    }
+  }
+
+  startListening() {
+    if (this.recognition && !this.isListening) {
+      this.recognition.start();
+    } else {
+      alert(
+        "Speech recognition not supported in this browser. Please use Chrome."
+      );
+    }
+  }
+
+  handleSpeechResult(transcript) {
+    // Put the transcript in the input field
+    const messageInput = document.getElementById("messageInput");
+    if (messageInput) {
+      messageInput.value = transcript;
+    }
+
+    // Automatically send the message
+    sendMessage();
+  }
+
+  updateMicButton(listening) {
+    const micButton = document.getElementById("micButton");
+    if (micButton) {
+      micButton.textContent = listening ? "🔴" : "🎤";
+      micButton.disabled = listening;
+    }
+  }
+}
+
+// Initialize speech handler
+const speechHandler = new BrowserSpeechHandler();
+
+// Update your microphone button click handler
+function startListening() {
+  speechHandler.startListening();
+}
+
+// Add browser TTS function
+function speakText(text) {
+  if ("speechSynthesis" in window) {
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // Try to use a female voice
+    const voices = speechSynthesis.getVoices();
+    const femaleVoice = voices.find(
+      (voice) =>
+        voice.name.toLowerCase().includes("female") ||
+        voice.name.toLowerCase().includes("zira") ||
+        voice.name.toLowerCase().includes("hazel")
+    );
+
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+    }
+
+    utterance.rate = 0.9;
+    utterance.pitch = 1.0;
+    utterance.volume = 0.9;
+
+    speechSynthesis.speak(utterance);
+    console.log("🗣️ Speaking:", text.substring(0, 50) + "...");
+  }
+}
+
+// Update your message response handler
+function handleResponse(data) {
+  if (data.success && data.response) {
+    // Display the response
+    displayMessage(data.response, "ai");
+
+    // Handle voice output
+    if (data.use_browser_tts) {
+      speakText(data.response);
+    }
+  }
+}
+
 // Initialize ParentBot when the script loads
 let parentBot;
 
