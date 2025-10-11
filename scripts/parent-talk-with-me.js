@@ -1,607 +1,291 @@
 // ParentBot Voice Assistant - Complete Implementation
-class ParentVoiceAssistant {
+class ParentBotVoiceAssistant {
   constructor() {
+    this.recognition = null;
+    this.synth = window.speechSynthesis;
     this.isListening = false;
-    this.isProcessing = false;
+    this.isSpeaking = false;
     this.conversationHistory = [];
-    this.parentContext = {
-      name: "Parent",
-      currentTask: null,
-      preferences: [],
-    };
-
-    // Dynamic backend URL for production
-    this.backendURL =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000/api"
-        : "https://freespace-ai-platform.onrender.com/api";
-
-    // DOM elements - Updated to match your HTML
-    this.chatMessages = null;
-    this.talkButton = null;
-    this.stopButton = null;
-    this.connectionStatus = null;
-    this.quickButtons = null;
+    this.retryCount = 0;
+    this.maxRetries = 3;
+    this.backendUrl =
+      window.location.hostname === "localhost"
+        ? "http://localhost:5000"
+        : window.location.origin;
 
     this.init();
   }
 
   async init() {
-    try {
-      console.log("ParentBot Voice Assistant loading...");
+    console.log("🤖 Initializing ParentBot...");
 
-      // Wait for DOM to be ready
-      if (document.readyState === "loading") {
-        await new Promise((resolve) => {
-          document.addEventListener("DOMContentLoaded", resolve);
-        });
-      }
-
-      this.setupDOM();
-      this.setupEventListeners();
-      this.setupTimeDisplay();
-      await this.startConversation();
-
-      console.log("ParentBot Voice Assistant initialized successfully");
-    } catch (error) {
-      console.error("Failed to initialize ParentBot:", error);
-      this.showError(
-        "Failed to initialize ParentBot. Please refresh the page."
-      );
-    }
-  }
-
-  setupDOM() {
-    // Get DOM elements matching your HTML structure
-    this.chatMessages = document.getElementById("chatMessages");
-    this.talkButton = document.getElementById("talkButton");
-    this.stopButton = document.getElementById("stopButton");
-    this.connectionStatus = document.getElementById("connectionStatus");
-    this.quickButtons = document.querySelectorAll(".quick-btn");
-
-    console.log("DOM setup complete:");
-    console.log("- Chat messages:", !!this.chatMessages);
-    console.log("- Talk button:", !!this.talkButton);
-    console.log("- Stop button:", !!this.stopButton);
-    console.log("- Connection status:", !!this.connectionStatus);
-    console.log("- Quick buttons:", this.quickButtons.length);
-  }
-
-  setupEventListeners() {
-    // Talk button - main interaction
-    if (this.talkButton) {
-      this.talkButton.addEventListener("click", () => {
-        if (this.isListening) {
-          this.stopListening();
-        } else {
-          this.startListening();
-        }
-      });
-    }
-
-    // Stop button
-    if (this.stopButton) {
-      this.stopButton.addEventListener("click", () => {
-        this.stopListening();
-        if ("speechSynthesis" in window) {
-          speechSynthesis.cancel();
-        }
-      });
-    }
-
-    // Quick response buttons
-    this.quickButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const response = button.getAttribute("data-response");
-        if (response) {
-          this.handleQuickResponse(response);
-        }
-      });
-    });
-
-    // Home navigation
-    const homeBtn = document.querySelector(".home-btn");
-    if (homeBtn) {
-      homeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        window.location.href = "who-are-you.html";
-      });
-    }
-
-    // Zen mode navigation
-    const zenBtn = document.querySelector(".zen-btn");
-    if (zenBtn) {
-      zenBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        window.location.href = "zenmode.html";
-      });
-    }
-  }
-
-  setupTimeDisplay() {
-    const timeDisplay = document.getElementById("currentTime");
-    if (timeDisplay) {
-      const updateTime = () => {
-        const now = new Date();
-        const istTime = new Intl.DateTimeFormat("en-IN", {
-          timeZone: "Asia/Kolkata",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: true,
-        }).format(now);
-        timeDisplay.textContent = istTime;
-      };
-
-      updateTime();
-      setInterval(updateTime, 1000);
-    }
-  }
-
-  async startConversation() {
-    try {
-      this.showStatus("Connecting to ParentBot...", "connecting");
-
-      // Get user data from localStorage
-      const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
-      const userName = currentUser.name || "Parent";
-
-      this.parentContext.name = userName;
-
-      // Updated to use dynamic URL
-      const response = await fetch(
-        `${this.backendURL}/parent/start-conversation`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: userName,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        this.clearInitialMessage();
-        this.addMessage(data.message, "ai-message");
-        this.showStatus("Ready! Click 'Talk to ParentBot' to start", "ready");
-        this.enableTalkButton();
-      } else {
-        throw new Error(data.error || "Failed to start conversation");
-      }
-    } catch (error) {
-      console.error("Failed to start conversation:", error);
-      this.showError("Connection failed. Using offline mode.");
-      this.clearInitialMessage();
-      this.addMessage(
-        "Hello! I'm ParentBot, your AI parenting assistant. I'm here to help you with meal planning, creating todo lists, parenting guidance, bedtime stories for your kids, and money management. What can I help you with today?",
-        "ai-message"
-      );
-      this.showStatus(
-        "Offline mode - Click to talk or use quick buttons",
-        "offline"
-      );
-      this.enableTalkButton();
-    }
-  }
-
-  clearInitialMessage() {
-    if (this.chatMessages) {
-      // Remove the initial loading message
-      const initialMessage = this.chatMessages.querySelector(
-        ".message.ai-message"
-      );
-      if (initialMessage) {
-        initialMessage.remove();
-      }
-    }
-  }
-
-  enableTalkButton() {
-    if (this.talkButton) {
-      this.talkButton.disabled = false;
-      this.talkButton.style.opacity = "1";
-      this.talkButton.style.pointerEvents = "auto";
-    }
-  }
-
-  async handleQuickResponse(responseText) {
-    if (this.isProcessing) return;
-
-    this.addMessage(responseText, "user-message");
-    await this.getAIResponse(responseText);
-  }
-
-  async getAIResponse(message) {
-    this.isProcessing = true;
-    this.showStatus("ParentBot is thinking...", "processing");
-
-    try {
-      // Updated to use dynamic URL
-      const response = await fetch(`${this.backendURL}/parent/respond`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: message,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        this.addMessage(data.response, "ai-message");
-        this.showStatus(
-          "Ready! Click 'Talk to ParentBot' to continue",
-          "ready"
-        );
-
-        // Auto-speak the response
-        await this.speakText(data.response);
-      } else {
-        throw new Error(data.error || "Failed to get response");
-      }
-    } catch (error) {
-      console.error("Failed to get response:", error);
-      this.addMessage(
-        "I'm having trouble processing that right now. Could you please try again? I'm here to help with meal planning, todo lists, parenting tips, bedtime stories, or money management.",
-        "ai-message"
-      );
-      this.showStatus("Error - please try again", "error");
-    } finally {
-      this.isProcessing = false;
-    }
-  }
-
-  async startListening() {
-    if (this.isListening) return;
-
-    try {
-      this.isListening = true;
-      this.updateTalkButton(true);
-      this.showStatus("🎤 Listening... Speak now", "listening");
-
-      // Check if browser supports speech recognition
-      if (
-        !("webkitSpeechRecognition" in window) &&
-        !("SpeechRecognition" in window)
-      ) {
-        throw new Error("Speech recognition not supported in this browser");
-      }
-
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = "en-US";
-
-      recognition.onresult = async (event) => {
-        const transcript = event.results[0][0].transcript;
-        console.log("Heard:", transcript);
-
-        this.stopListening();
-        this.addMessage(transcript, "user-message");
-        await this.getAIResponse(transcript);
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        this.stopListening();
-        this.showError(
-          "Speech recognition failed. Please try again or use quick buttons."
-        );
-      };
-
-      recognition.onend = () => {
-        this.stopListening();
-      };
-
-      recognition.start();
-    } catch (error) {
-      console.error("Failed to start listening:", error);
-      this.stopListening();
-      this.showError(
-        "Microphone access failed. Please check permissions or use quick buttons."
-      );
-    }
-  }
-
-  stopListening() {
-    this.isListening = false;
-    this.updateTalkButton(false);
-    this.showStatus(
-      "Ready! Click 'Talk to ParentBot' or use quick buttons",
-      "ready"
-    );
-  }
-
-  async speakText(text) {
-    try {
-      // Updated to use dynamic URL
-      const response = await fetch(`${this.backendURL}/parent/speak`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: text,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Server TTS unavailable");
-      }
-
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.error || "Server TTS failed");
-      }
-    } catch (error) {
-      console.error("Server TTS error:", error);
-      // Fallback to browser TTS
-      this.fallbackTTS(text);
-    }
-  }
-
-  fallbackTTS(text) {
-    if ("speechSynthesis" in window) {
-      // Cancel any ongoing speech
-      speechSynthesis.cancel();
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.volume = 0.8;
-
-      // Try to get a female voice
-      const voices = speechSynthesis.getVoices();
-      const femaleVoice = voices.find(
-        (voice) =>
-          voice.name.includes("Female") ||
-          voice.name.includes("Zira") ||
-          voice.name.includes("Google UK English Female") ||
-          voice.gender === "female"
-      );
-
-      if (femaleVoice) {
-        utterance.voice = femaleVoice;
-      }
-
-      speechSynthesis.speak(utterance);
-    }
-  }
-
-  addMessage(message, messageClass) {
-    if (!this.chatMessages) {
-      console.error("Chat messages container not available");
+    if (location.protocol !== "https:" && location.hostname !== "localhost") {
+      this.showError("Speech features require HTTPS connection");
       return;
     }
 
-    const messageDiv = document.createElement("div");
-    messageDiv.className = `message ${messageClass}`;
-
-    const messageAvatar = document.createElement("div");
-    messageAvatar.className = "message-avatar";
-
-    if (messageClass === "ai-message") {
-      messageAvatar.innerHTML = '<i class="fas fa-home"></i>';
-    } else {
-      messageAvatar.innerHTML = '<i class="fas fa-user"></i>';
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      this.showError("Speech recognition not supported in this browser");
+      return;
     }
 
-    const messageContent = document.createElement("div");
-    messageContent.className = "message-content";
+    this.recognition = new SpeechRecognition();
+    this.setupRecognition();
 
-    const messageParagraph = document.createElement("p");
-    messageParagraph.textContent = message;
+    await this.checkMicrophonePermissions();
+    await this.initializeBackend();
 
-    const messageTime = document.createElement("div");
-    messageTime.className = "message-time";
-    messageTime.textContent = new Date().toLocaleTimeString();
-
-    messageContent.appendChild(messageParagraph);
-    messageContent.appendChild(messageTime);
-
-    messageDiv.appendChild(messageAvatar);
-    messageDiv.appendChild(messageContent);
-
-    this.chatMessages.appendChild(messageDiv);
-    this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
-
-    // Store in conversation history
-    this.conversationHistory.push({
-      message: message,
-      sender: messageClass,
-      timestamp: new Date().toISOString(),
-    });
+    console.log("✅ ParentBot initialized successfully");
+    this.updateStatus("ParentBot is ready to help! 🏠");
+    this.enableTalkButton();
   }
 
-  showStatus(message, type = "info") {
-    if (this.connectionStatus) {
-      this.connectionStatus.textContent = message;
-      this.connectionStatus.className = `status ${type}`;
+  setupRecognition() {
+    if (!this.recognition) return;
+
+    this.recognition.continuous = false;
+    this.recognition.interimResults = false;
+    this.recognition.lang = "en-US";
+    this.recognition.maxAlternatives = 1;
+
+    this.recognition.onstart = () => {
+      console.log("🎤 Listening...");
+      this.isListening = true;
+      this.retryCount = 0;
+      this.updateTalkButton("Listening...", true);
+    };
+
+    this.recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      console.log("Parent said:", transcript);
+      this.processUserInput(transcript);
+    };
+
+    this.recognition.onerror = (event) => {
+      console.log("Speech recognition error:", event.error);
+      this.handleRecognitionError(event.error);
+    };
+
+    this.recognition.onend = () => {
+      console.log("🔇 Speech recognition ended");
+      this.isListening = false;
+      this.updateTalkButton("Hold to Talk", false);
+    };
+  }
+
+  handleRecognitionError(error) {
+    switch (error) {
+      case "network":
+        if (this.retryCount < this.maxRetries) {
+          this.retryCount++;
+          setTimeout(() => {
+            if (!this.isListening && navigator.onLine) {
+              this.startListening();
+            }
+          }, 2000 * this.retryCount);
+        } else {
+          this.showError("Network connection issue. Please try again.");
+          this.retryCount = 0;
+        }
+        break;
+
+      case "not-allowed":
+        this.showError("Please allow microphone access and refresh the page.");
+        break;
+
+      case "no-speech":
+        console.log("No speech detected");
+        break;
+
+      default:
+        if (this.retryCount < this.maxRetries) {
+          this.retryCount++;
+          setTimeout(() => this.startListening(), 1000);
+        }
     }
-    console.log(`Status (${type}): ${message}`);
   }
 
-  showError(message) {
-    this.showStatus(message, "error");
-    console.error("ParentBot Error:", message);
-  }
-
-  updateTalkButton(listening) {
-    if (this.talkButton) {
-      const icon = this.talkButton.querySelector("i");
-      const span = this.talkButton.querySelector("span");
-
-      if (listening) {
-        this.talkButton.classList.add("listening");
-        if (icon) icon.className = "fas fa-stop";
-        if (span) span.textContent = "Stop Listening";
-      } else {
-        this.talkButton.classList.remove("listening");
-        if (icon) icon.className = "fas fa-microphone";
-        if (span) span.textContent = "Talk to ParentBot";
-      }
+  async checkMicrophonePermissions() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((track) => track.stop());
+      return true;
+    } catch (error) {
+      this.showError("Please allow microphone access");
+      return false;
     }
   }
-}
 
-// Add this to all your chat JavaScript files (student, parent, professional, codegent)
-
-class BrowserSpeechHandler {
-  constructor() {
-    this.recognition = null;
-    this.isListening = false;
-    this.initSpeechRecognition();
-  }
-
-  initSpeechRecognition() {
-    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      this.recognition = new SpeechRecognition();
-
-      this.recognition.continuous = false;
-      this.recognition.interimResults = false;
-      this.recognition.lang = "en-US";
-
-      this.recognition.onstart = () => {
-        this.isListening = true;
-        console.log("🎤 Listening...");
-        this.updateMicButton(true);
-      };
-
-      this.recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        console.log("🗣️ Heard:", transcript);
-        this.handleSpeechResult(transcript);
-      };
-
-      this.recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        this.isListening = false;
-        this.updateMicButton(false);
-      };
-
-      this.recognition.onend = () => {
-        this.isListening = false;
-        this.updateMicButton(false);
-      };
+  async initializeBackend() {
+    try {
+      const response = await fetch(
+        `${this.backendUrl}/api/parent/start-conversation`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }
+      );
+      return response.ok;
+    } catch (error) {
+      console.log("Backend fallback mode");
+      return false;
     }
   }
 
   startListening() {
-    if (this.recognition && !this.isListening) {
+    if (!this.recognition || this.isListening || !navigator.onLine) return;
+
+    try {
       this.recognition.start();
-    } else {
-      alert(
-        "Speech recognition not supported in this browser. Please use Chrome."
-      );
+    } catch (error) {
+      console.log("Error starting recognition:", error);
     }
   }
 
-  handleSpeechResult(transcript) {
-    // Put the transcript in the input field
-    const messageInput = document.getElementById("messageInput");
-    if (messageInput) {
-      messageInput.value = transcript;
-    }
-
-    // Automatically send the message
-    sendMessage();
-  }
-
-  updateMicButton(listening) {
-    const micButton = document.getElementById("micButton");
-    if (micButton) {
-      micButton.textContent = listening ? "🔴" : "🎤";
-      micButton.disabled = listening;
+  stopListening() {
+    if (this.recognition && this.isListening) {
+      this.recognition.stop();
     }
   }
-}
 
-// Initialize speech handler
-const speechHandler = new BrowserSpeechHandler();
+  async processUserInput(transcript) {
+    this.addMessage(transcript, "user");
+    this.updateStatus("ParentBot is thinking...");
 
-// Update your microphone button click handler
-function startListening() {
-  speechHandler.startListening();
-}
+    try {
+      const response = await fetch(`${this.backendUrl}/api/parent/respond`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: transcript,
+          conversation_history: this.conversationHistory,
+        }),
+      });
 
-// Add browser TTS function
-function speakText(text) {
-  if ("speechSynthesis" in window) {
+      if (response.ok) {
+        const data = await response.json();
+        const aiResponse =
+          data.response || "I'm here to help with parenting guidance.";
+        this.addMessage(aiResponse, "ai");
+        this.speakResponse(aiResponse);
+      } else {
+        throw new Error("Backend error");
+      }
+    } catch (error) {
+      const fallbackResponse = this.getParentFallbackResponse(transcript);
+      this.addMessage(fallbackResponse, "ai");
+      this.speakResponse(fallbackResponse);
+    }
+
+    this.updateStatus("ParentBot is ready to help! 🏠");
+  }
+
+  getParentFallbackResponse(message) {
+    const responses = [
+      "Parenting can be challenging. What specific situation would you like guidance on?",
+      "Every child is unique. Can you tell me more about what you're experiencing?",
+      "That sounds like a common parenting concern. Let's work through this together.",
+      "I understand this can be stressful. What age group are we talking about?",
+      "Parenting is a journey of learning. What support do you need right now?",
+    ];
+    return responses[Math.floor(Math.random() * responses.length)];
+  }
+
+  speakResponse(text) {
+    if (this.isSpeaking) this.synth.cancel();
+
     const utterance = new SpeechSynthesisUtterance(text);
-
-    // Try to use a female voice
-    const voices = speechSynthesis.getVoices();
-    const femaleVoice = voices.find(
-      (voice) =>
-        voice.name.toLowerCase().includes("female") ||
-        voice.name.toLowerCase().includes("zira") ||
-        voice.name.toLowerCase().includes("hazel")
-    );
-
-    if (femaleVoice) {
-      utterance.voice = femaleVoice;
-    }
-
     utterance.rate = 0.9;
     utterance.pitch = 1.0;
-    utterance.volume = 0.9;
+    utterance.volume = 0.8;
 
-    speechSynthesis.speak(utterance);
-    console.log("🗣️ Speaking:", text.substring(0, 50) + "...");
+    utterance.onstart = () => (this.isSpeaking = true);
+    utterance.onend = () => (this.isSpeaking = false);
+
+    this.synth.speak(utterance);
+  }
+
+  addMessage(text, sender) {
+    const chatMessages = document.getElementById("chatMessages");
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `message ${sender}-message`;
+
+    const time = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas ${sender === "user" ? "fa-user" : "fa-home"}"></i>
+            </div>
+            <div class="message-content">
+                <p>${text}</p>
+                <div class="message-time">${time}</div>
+            </div>
+        `;
+
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    this.conversationHistory.push({
+      text: text,
+      sender: sender,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  updateStatus(status) {
+    const statusElement = document.getElementById("connectionStatus");
+    if (statusElement) statusElement.textContent = status;
+  }
+
+  updateTalkButton(text, active) {
+    const talkButton = document.getElementById("talkButton");
+    const buttonText = talkButton?.querySelector("span");
+    if (buttonText) buttonText.textContent = text;
+    talkButton?.classList.toggle("listening", active);
+  }
+
+  enableTalkButton() {
+    const talkButton = document.getElementById("talkButton");
+    if (talkButton) talkButton.disabled = false;
+  }
+
+  showError(message) {
+    console.error("Error:", message);
+    this.updateStatus(`Error: ${message}`);
   }
 }
 
-// Update your message response handler
-function handleResponse(data) {
-  if (data.success && data.response) {
-    // Display the response
-    displayMessage(data.response, "ai");
+// Initialize ParentBot
+document.addEventListener("DOMContentLoaded", function () {
+  const parentBot = new ParentBotVoiceAssistant();
 
-    // Handle voice output
-    if (data.use_browser_tts) {
-      speakText(data.response);
-    }
+  const talkButton = document.getElementById("talkButton");
+  const stopButton = document.getElementById("stopButton");
+
+  if (talkButton) {
+    talkButton.addEventListener("mousedown", () => parentBot.startListening());
+    talkButton.addEventListener("mouseup", () => parentBot.stopListening());
+    talkButton.addEventListener("touchstart", () => parentBot.startListening());
+    talkButton.addEventListener("touchend", () => parentBot.stopListening());
   }
-}
 
-// Initialize ParentBot when the script loads
-let parentBot;
+  if (stopButton) {
+    stopButton.addEventListener("click", () => {
+      parentBot.stopListening();
+      parentBot.synth.cancel();
+    });
+  }
 
-// Wait for DOM content to load
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    parentBot = new ParentVoiceAssistant();
+  document.querySelectorAll(".quick-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const response = button.getAttribute("data-response");
+      if (response) parentBot.processUserInput(response);
+    });
   });
-} else {
-  parentBot = new ParentVoiceAssistant();
-}
-
-// Export for debugging
-window.parentBot = parentBot;
-
-// Load voices when they become available
-if ("speechSynthesis" in window) {
-  speechSynthesis.onvoiceschanged = () => {
-    console.log("Voices loaded:", speechSynthesis.getVoices().length);
-  };
-}
+});

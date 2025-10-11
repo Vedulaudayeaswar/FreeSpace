@@ -305,130 +305,311 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Add this to all your chat JavaScript files (student, parent, professional, codegent)
-
-  class BrowserSpeechHandler {
+  class MayaVoiceAssistant {
     constructor() {
       this.recognition = null;
+      this.synth = window.speechSynthesis;
       this.isListening = false;
-      this.initSpeechRecognition();
+      this.isSpeaking = false;
+      this.conversationHistory = [];
+      this.retryCount = 0;
+      this.maxRetries = 3;
+      // Update for Render deployment
+      this.backendUrl =
+        window.location.hostname === "localhost"
+          ? "http://localhost:5000"
+          : window.location.origin; // Use same origin for Render
+
+      this.init();
     }
 
-    initSpeechRecognition() {
-      if (
-        "webkitSpeechRecognition" in window ||
-        "SpeechRecognition" in window
-      ) {
-        const SpeechRecognition =
-          window.SpeechRecognition || window.webkitSpeechRecognition;
-        this.recognition = new SpeechRecognition();
+    async init() {
+      console.log("🤖 Initializing Maya...");
 
-        this.recognition.continuous = false;
-        this.recognition.interimResults = false;
-        this.recognition.lang = "en-US";
+      // Check for HTTPS (Render provides HTTPS by default)
+      if (location.protocol !== "https:" && location.hostname !== "localhost") {
+        console.error("❌ Speech Recognition requires HTTPS");
+        this.showError("Speech features require HTTPS connection");
+        return;
+      }
 
-        this.recognition.onstart = () => {
-          this.isListening = true;
-          console.log("🎤 Listening...");
-          this.updateMicButton(true);
-        };
+      // Check speech recognition support
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        console.error("❌ Speech Recognition not supported");
+        this.showError("Speech recognition not supported in this browser");
+        return;
+      }
 
-        this.recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
-          console.log("🗣️ Heard:", transcript);
-          this.handleSpeechResult(transcript);
-        };
+      this.recognition = new SpeechRecognition();
+      this.setupRecognition();
 
-        this.recognition.onerror = (event) => {
-          console.error("Speech recognition error:", event.error);
-          this.isListening = false;
-          this.updateMicButton(false);
-        };
+      await this.checkMicrophonePermissions();
+      await this.initializeBackend();
 
-        this.recognition.onend = () => {
-          this.isListening = false;
-          this.updateMicButton(false);
-        };
+      console.log("✅ Maya initialized successfully");
+      this.updateStatus("Maya is ready to listen! 💙");
+      this.enableTalkButton();
+    }
+
+    setupRecognition() {
+      if (!this.recognition) return;
+
+      this.recognition.continuous = false;
+      this.recognition.interimResults = false;
+      this.recognition.lang = "en-US";
+      this.recognition.maxAlternatives = 1;
+
+      this.recognition.onstart = () => {
+        console.log("🎤 Listening...");
+        this.isListening = true;
+        this.retryCount = 0;
+        this.updateTalkButton("Listening...", true);
+      };
+
+      this.recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        console.log("User said:", transcript);
+        this.processUserInput(transcript);
+      };
+
+      this.recognition.onerror = (event) => {
+        console.log("Speech recognition error:", event.error);
+        this.handleRecognitionError(event.error);
+      };
+
+      this.recognition.onend = () => {
+        console.log("🔇 Speech recognition ended");
+        this.isListening = false;
+        this.updateTalkButton("Hold to Talk", false);
+      };
+    }
+
+    handleRecognitionError(error) {
+      console.log(`Speech recognition error: ${error}`);
+
+      switch (error) {
+        case "network":
+          if (this.retryCount < this.maxRetries) {
+            this.retryCount++;
+            console.log(
+              `Network error - retry attempt ${this.retryCount}/${this.maxRetries}`
+            );
+            setTimeout(() => {
+              if (!this.isListening && navigator.onLine) {
+                this.startListening();
+              }
+            }, 2000 * this.retryCount);
+          } else {
+            this.showError("Network connection issue. Please try again.");
+            this.retryCount = 0;
+          }
+          break;
+
+        case "not-allowed":
+          this.showError(
+            "Please allow microphone access and refresh the page."
+          );
+          break;
+
+        case "no-speech":
+          console.log("No speech detected");
+          break;
+
+        default:
+          if (this.retryCount < this.maxRetries) {
+            this.retryCount++;
+            setTimeout(() => this.startListening(), 1000);
+          }
+      }
+    }
+
+    async checkMicrophonePermissions() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        stream.getTracks().forEach((track) => track.stop());
+        return true;
+      } catch (error) {
+        this.showError("Please allow microphone access");
+        return false;
+      }
+    }
+
+    async initializeBackend() {
+      try {
+        const response = await fetch(
+          `${this.backendUrl}/api/student/start-conversation`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({}),
+          }
+        );
+        return response.ok;
+      } catch (error) {
+        console.log("Backend fallback mode");
+        return false;
       }
     }
 
     startListening() {
-      if (this.recognition && !this.isListening) {
+      if (!this.recognition || this.isListening || !navigator.onLine) return;
+
+      try {
         this.recognition.start();
-      } else {
-        alert(
-          "Speech recognition not supported in this browser. Please use Chrome."
-        );
+      } catch (error) {
+        console.log("Error starting recognition:", error);
       }
     }
 
-    handleSpeechResult(transcript) {
-      // Put the transcript in the input field
-      const messageInput = document.getElementById("messageInput");
-      if (messageInput) {
-        messageInput.value = transcript;
-      }
-
-      // Automatically send the message
-      sendMessage();
-    }
-
-    updateMicButton(listening) {
-      const micButton = document.getElementById("micButton");
-      if (micButton) {
-        micButton.textContent = listening ? "🔴" : "🎤";
-        micButton.disabled = listening;
+    stopListening() {
+      if (this.recognition && this.isListening) {
+        this.recognition.stop();
       }
     }
-  }
 
-  // Initialize speech handler
-  const speechHandler = new BrowserSpeechHandler();
+    async processUserInput(transcript) {
+      this.addMessage(transcript, "user");
+      this.updateStatus("Maya is thinking...");
 
-  // Update your microphone button click handler
-  function startListening() {
-    speechHandler.startListening();
-  }
+      try {
+        const response = await fetch(`${this.backendUrl}/api/student/respond`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: transcript,
+            conversation_history: this.conversationHistory,
+          }),
+        });
 
-  // Add browser TTS function
-  function speakText(text) {
-    if ("speechSynthesis" in window) {
+        if (response.ok) {
+          const data = await response.json();
+          const aiResponse = data.response || "I'm here to support you.";
+          this.addMessage(aiResponse, "ai");
+          this.speakResponse(aiResponse);
+        } else {
+          throw new Error("Backend error");
+        }
+      } catch (error) {
+        const fallbackResponse = this.getFallbackResponse(transcript);
+        this.addMessage(fallbackResponse, "ai");
+        this.speakResponse(fallbackResponse);
+      }
+
+      this.updateStatus("Maya is ready to listen! 💙");
+    }
+
+    getFallbackResponse(message) {
+      const responses = [
+        "I hear you, and your feelings are valid. Tell me more about what's going on?",
+        "Thank you for sharing. It sounds difficult. I'm here to listen.",
+        "You're brave for reaching out. What would help you right now?",
+        "I'm glad you feel comfortable talking to me. Your wellbeing matters.",
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    speakResponse(text) {
+      if (this.isSpeaking) this.synth.cancel();
+
       const utterance = new SpeechSynthesisUtterance(text);
-
-      // Try to use a female voice
-      const voices = speechSynthesis.getVoices();
-      const femaleVoice = voices.find(
-        (voice) =>
-          voice.name.toLowerCase().includes("female") ||
-          voice.name.toLowerCase().includes("zira") ||
-          voice.name.toLowerCase().includes("hazel")
-      );
-
-      if (femaleVoice) {
-        utterance.voice = femaleVoice;
-      }
-
       utterance.rate = 0.9;
-      utterance.pitch = 1.0;
-      utterance.volume = 0.9;
+      utterance.pitch = 1.1;
+      utterance.volume = 0.8;
 
-      speechSynthesis.speak(utterance);
-      console.log("🗣️ Speaking:", text.substring(0, 50) + "...");
+      utterance.onstart = () => (this.isSpeaking = true);
+      utterance.onend = () => (this.isSpeaking = false);
+
+      this.synth.speak(utterance);
+    }
+
+    addMessage(text, sender) {
+      const chatMessages = document.getElementById("chatMessages");
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `message ${sender}-message`;
+
+      const time = new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas ${
+                  sender === "user" ? "fa-user" : "fa-heart"
+                }"></i>
+            </div>
+            <div class="message-content">
+                <p>${text}</p>
+                <div class="message-time">${time}</div>
+            </div>
+        `;
+
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      this.conversationHistory.push({
+        text: text,
+        sender: sender,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    updateStatus(status) {
+      const statusElement = document.getElementById("connectionStatus");
+      if (statusElement) statusElement.textContent = status;
+    }
+
+    updateTalkButton(text, active) {
+      const talkButton = document.getElementById("talkButton");
+      const buttonText = talkButton?.querySelector("span");
+      if (buttonText) buttonText.textContent = text;
+      talkButton?.classList.toggle("listening", active);
+    }
+
+    enableTalkButton() {
+      const talkButton = document.getElementById("talkButton");
+      if (talkButton) talkButton.disabled = false;
+    }
+
+    showError(message) {
+      console.error("Error:", message);
+      this.updateStatus(`Error: ${message}`);
     }
   }
 
-  // Update your message response handler
-  function handleResponse(data) {
-    if (data.success && data.response) {
-      // Display the response
-      displayMessage(data.response, "ai");
+  // Initialize Maya
+  document.addEventListener("DOMContentLoaded", function () {
+    const maya = new MayaVoiceAssistant();
 
-      // Handle voice output
-      if (data.use_browser_tts) {
-        speakText(data.response);
-      }
+    const talkButton = document.getElementById("talkButton");
+    const stopButton = document.getElementById("stopButton");
+
+    if (talkButton) {
+      talkButton.addEventListener("mousedown", () => maya.startListening());
+      talkButton.addEventListener("mouseup", () => maya.stopListening());
+      talkButton.addEventListener("touchstart", () => maya.startListening());
+      talkButton.addEventListener("touchend", () => maya.stopListening());
     }
-  }
+
+    if (stopButton) {
+      stopButton.addEventListener("click", () => {
+        maya.stopListening();
+        maya.synth.cancel();
+      });
+    }
+
+    // Quick response buttons
+    document.querySelectorAll(".quick-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const response = button.getAttribute("data-response");
+        if (response) maya.processUserInput(response);
+      });
+    });
+  });
 
   // Event Listeners
   if (talkButton) {
